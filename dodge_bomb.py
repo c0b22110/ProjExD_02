@@ -54,7 +54,14 @@ def main():
         bom_img.set_colorkey((0, 0, 0))
         pg.draw.circle(bom_img, (255, 0, 0), (10*r, 10*r), 10*r)
         bom_imgs.append(bom_img)
-
+    key_lis = {(-5, 0): pg.transform.rotozoom(kk_img, 0, 1.0), 
+               (-5, -5): pg.transform.rotozoom(kk_img, -45, 1.0),
+               (0, -5): pg.transform.flip(pg.transform.rotozoom(kk_img, -90, 1.0), True, False),
+               (+5, -5): pg.transform.flip(pg.transform.rotozoom(kk_img, -45, 1.0), True, False),
+               (+5, 0): pg.transform.flip(kk_img, True, False),
+               (+5, +5): pg.transform.flip(pg.transform.rotozoom(kk_img, 45, 1.0), True, False),
+               (0, +5): pg.transform.flip(pg.transform.rotozoom(kk_img, 90, 1.0), True, False),
+               (-5, +5): pg.transform.rotozoom(kk_img, 45, 1.0)}
 
     while True:
         for event in pg.event.get():
@@ -71,6 +78,10 @@ def main():
             if key_lst[k]: 
                 sum_mv[0] += mv[0]
                 sum_mv[1] += mv[1]
+            for l, m in key_lis.items():
+                if sum_mv[0] ==l[0] and sum_mv[1] == l[1]:
+                    kk_img = m
+        
 
         kk_rct.move_ip(sum_mv)
         if hoge(kk_rct) != (True,True):
