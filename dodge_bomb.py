@@ -47,13 +47,22 @@ def main():
     vx, vy = +5, +5 #練習２
     clock = pg.time.Clock()
     tmr = 0
-    
+    accs = [a for a in range(1, 11)]
+    bom_imgs = []
+    for r in range(1, 11):
+        bom_img = pg.Surface((20*r, 20*r))
+        bom_img.set_colorkey((0, 0, 0))
+        pg.draw.circle(bom_img, (255, 0, 0), (10*r, 10*r), 10*r)
+        bom_imgs.append(bom_img)
+
+
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
             
         if kk_rct.colliderect(bom_rct):
+
             print("ゲームオーバー")
             return
         key_lst = pg.key.get_pressed()
@@ -62,17 +71,20 @@ def main():
             if key_lst[k]: 
                 sum_mv[0] += mv[0]
                 sum_mv[1] += mv[1]
+
         kk_rct.move_ip(sum_mv)
         if hoge(kk_rct) != (True,True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img, kk_rct) #練習２
-        bom_rct.move_ip(vx, vy)
+        avx, avy = vx*accs[min(tmr//500, 9)], vy*accs[min(tmr//500, 9)]
+        bom_rct.move_ip(avx, avy)
         yoko, tate = hoge(bom_rct)
         if not yoko:
             vx *= -1
         if not tate:
             vy *= -1
+        bom_img = bom_imgs[min(tmr//500, 9)]
         screen.blit(bom_img,bom_rct)
         pg.display.update()
         tmr += 1
