@@ -31,7 +31,9 @@ def main():
     screen = pg.display.set_mode((WIDTH, HEIGHT))
     bg_img = pg.image.load("ex02/fig/pg_bg.jpg")
     kk_img = pg.image.load("ex02/fig/3.png")
+    kk_img_game_over = pg.image.load("ex02/fig/8.png")
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
+    kk_img_game_over = pg.transform.rotozoom(kk_img_game_over, 0, 2.0)
     #こうかとんSurface(kk_img)からこうかとんRect（kk_rct)を抽出
     kk_rct = kk_img.get_rect()
     kk_rct.center = 900, 400
@@ -47,6 +49,8 @@ def main():
     vx, vy = +5, +5 #練習２
     clock = pg.time.Clock()
     tmr = 0
+    game_over = False
+    game_over_time = 3000  # 3秒間
     accs = [a for a in range(1, 11)]
     bom_imgs = []
     for r in range(1, 11):
@@ -70,7 +74,7 @@ def main():
             
         if kk_rct.colliderect(bom_rct):
             print("ゲームオーバー")
-            return
+            game_over = True
     
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0] #合計移動量
@@ -86,6 +90,11 @@ def main():
         if hoge(kk_rct) != (True,True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
         screen.blit(bg_img, [0, 0])
+        if game_over:
+            screen.blit(kk_img_game_over, kk_rct)
+            pg.display.update()
+            pg.time.delay(game_over_time)
+            return
         screen.blit(kk_img, kk_rct) #練習２
         avx, avy = vx*accs[min(tmr//500, 9)], vy*accs[min(tmr//500, 9)]
         bom_rct.move_ip(avx, avy)
