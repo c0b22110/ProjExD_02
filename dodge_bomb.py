@@ -85,6 +85,7 @@ def main():
             for l, m in key_lis.items():
                 if sum_mv[0] ==l[0] and sum_mv[1] == l[1]:
                     kk_img = m
+        
 
         kk_rct.move_ip(sum_mv)
         if hoge(kk_rct) != (True,True):
