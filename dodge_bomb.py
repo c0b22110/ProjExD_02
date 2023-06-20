@@ -21,6 +21,7 @@ def main():
     # 爆弾Surfaceから爆弾Rectを抽出する
     bom_rct.center = x, y 
     # 爆弾Rectの中心座標を乱数で指定する
+    vx, vy = +5, +5 #練習２
     clock = pg.time.Clock()
     tmr = 0
     
@@ -31,6 +32,7 @@ def main():
 
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img, [900, 400])
+        bom_rct.move_ip(vx, vy) #練習２
         screen.blit(bom_img,bom_rct)
         pg.display.update()
         tmr += 1
