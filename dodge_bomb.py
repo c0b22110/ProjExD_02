@@ -12,6 +12,20 @@ delt = {
     }
 
 
+def hoge(rect: pg.Rect) -> tuple[bool, bool]:
+    '''
+    こうかとんRect、爆弾Rectが画面の外か中かを判定する関数
+    引数 :こうかとんRect or 爆弾Rect
+    戻り値：横方向、縦方向の判定結果タプル(True:画面内、False:画面外)
+    '''
+    yoko, tate = True, True
+    if rect.left < 0 or WIDTH < rect.right: #横方向判定
+        yoko = False
+    if rect.top < 0 or HEIGHT < rect.bottom: #縦方向判定
+        tate = False
+    return yoko, tate
+
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -38,6 +52,8 @@ def main():
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
+            
+        
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0] #合計移動量
         for k, mv in delt.items():
@@ -45,11 +61,16 @@ def main():
                 sum_mv[0] += mv[0]
                 sum_mv[1] += mv[1]
         kk_rct.move_ip(sum_mv)
-        
-
+        if hoge(kk_rct) != (True,True):
+            kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
         screen.blit(bg_img, [0, 0])
-        screen.blit(kk_img, kk_rct)
-        bom_rct.move_ip(vx, vy) #練習２
+        screen.blit(kk_img, kk_rct) #練習２
+        bom_rct.move_ip(vx, vy)
+        yoko, tate = hoge(bom_rct)
+        if not yoko:
+            vx *= -1
+        if not tate:
+            vy *= -1
         screen.blit(bom_img,bom_rct)
         pg.display.update()
         tmr += 1
